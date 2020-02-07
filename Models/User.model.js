@@ -45,7 +45,7 @@ const userSchema = new Schema({
     userType:{
         type: String,
         required: true,
-        enum: ['User', 'Business']
+        enum: ['User', 'Business', 'Admin']
     },
     rangeLocation:{
         type: Number,
@@ -53,12 +53,14 @@ const userSchema = new Schema({
     }
 },{
     timestamps: true,
-    toJSON: (doc, ret) => {
+    toJSON: {
+        transform:(doc, ret) => {
         ret.id = doc.id
         delete ret._id
         delete ret.password
         delete ret.__v
         return ret
+        }
     }
 })
 

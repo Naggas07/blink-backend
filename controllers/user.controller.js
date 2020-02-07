@@ -21,3 +21,10 @@ module.exports.create = (req, res, next) => {
          res.status(202).json(user)
      }).catch(next)
 }
+
+module.exports.getUsers = (req, res, next) => {
+    User.find()
+    .then(users => {
+        res.json(users)
+    })
+}
