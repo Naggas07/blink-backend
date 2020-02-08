@@ -1,4 +1,3 @@
-const createError = require("http-errors");
 const mongoose = require("mongoose");
 
 const User = require("../Models/User.model");
@@ -49,9 +48,9 @@ module.exports.login = (req, res, next) => {
       if (!user) {
         res.status(404).json({ message: "User not found" });
       } else {
-        return user.comparePassword(password)
-        .then(match => {
+        return user.comparePassword(password).then(match => {
           if (match) {
+            req.session.user = user;
             res.status(200).json(user);
           } else {
             res.status(404).json({ message: "User not found" });
@@ -61,3 +60,9 @@ module.exports.login = (req, res, next) => {
     })
     .catch(next);
 };
+
+
+module.exports.logout = (req, res) => {
+    req.session.destroy()
+    res.status(204).json({message: 'session destroyed'})
+}
