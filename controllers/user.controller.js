@@ -61,8 +61,28 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-
 module.exports.logout = (req, res) => {
-    req.session.destroy()
-    res.status(204).json({message: 'session destroyed'})
-}
+  req.session.destroy();
+  res.status(204).json({ message: "session destroyed" });
+};
+
+module.exports.updateUser = (req, res, next) => {
+  const { id } = req.params;
+
+  if (id != req.session.user.id && req.session.user.userType != "Admin") {
+    res.status(403).json({ message: "Forbidden" });
+  }
+
+  const userUpdate = req.body;
+
+  User.findOneAndUpdate(id, userUpdate, { new: true })
+    .then(user => {
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+      } else {
+        user.avatar = req.file ? req.file.url : user.avatar;
+        res.status(200).json(user);
+      }
+    })
+    .catch(next);
+};
