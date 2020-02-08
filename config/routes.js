@@ -37,4 +37,11 @@ router.put(
   userController.updateUser
 );
 
+router.delete(
+  "/user/delete/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isAdmin,
+  userController.deleteUser
+);
+
 module.exports = router;

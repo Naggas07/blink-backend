@@ -86,3 +86,13 @@ module.exports.updateUser = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.deleteUser = (req, res, next) => {
+  const { id } = req.params;
+
+  User.findByIdAndDelete(id)
+    .then(ok => {
+      res.status(200).json({ message: "User deleted" });
+    })
+    .catch(next);
+};
