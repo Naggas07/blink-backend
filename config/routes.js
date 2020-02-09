@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/base.controller");
 const userController = require("../controllers/user.controller");
+const friendController = require("../controllers/friends.controller");
 
 //middlewares
 const authMiddleware = require("../middlewares/auth.middleware");
@@ -43,5 +44,8 @@ router.delete(
   rolMiddleware.isAdmin,
   userController.deleteUser
 );
+
+//friend routes
+router.post("/friends/new", friendController.createFriends);
 
 module.exports = router;

@@ -93,6 +93,13 @@ userSchema.methods.comparePassword = function(password) {
   return bcrypt.compare(password, this.password);
 };
 
+userSchema.virtual("Friends", {
+  ref: "Friends",
+  localField: "_id",
+  foreignField: "friends",
+  justOne: false
+});
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
