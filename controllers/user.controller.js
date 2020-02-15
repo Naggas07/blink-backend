@@ -31,6 +31,20 @@ module.exports.create = (req, res, next) => {
 };
 
 module.exports.getUsers = (req, res, next) => {
+  User.find({ userType: "User" }).then(users => {
+    res.json(users);
+  });
+};
+
+module.exports.getBussiness = (_, res, next) => {
+  User.find({ userType: "Bussiness" })
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(next);
+};
+
+module.exports.getAllUsers = (req, res, next) => {
   User.find().then(users => {
     res.json(users);
   });

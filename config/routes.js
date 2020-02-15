@@ -30,8 +30,21 @@ router.get(
   "/users",
   authMiddleware.isAuthenticated,
   rolMiddleware.isAdmin,
+  userController.getAllUsers
+);
+
+router.get(
+  "/users/bussiness",
+  authMiddleware.isAuthenticated,
+  userController.getBussiness
+);
+
+router.get(
+  "/users/list",
+  authMiddleware.isAuthenticated,
   userController.getUsers
 );
+
 router.put(
   "/user/update/:id",
   authMiddleware.isAuthenticated,
@@ -46,6 +59,10 @@ router.delete(
 );
 
 //friend routes
-router.post("/friends/new", friendController.createFriends);
+router.post(
+  "/friends/new",
+  authMiddleware.isAuthenticated,
+  friendController.createFriends
+);
 
 module.exports = router;
