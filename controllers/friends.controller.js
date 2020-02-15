@@ -7,29 +7,56 @@ module.exports.createFriends = (req, res, next) => {
   const { user1, user2 } = req.body;
 
   if (!user1 || !user2) {
-    res.status(404).json({ mesage: "user not found" });
+    res.status(404).json({ mesage: "users are required" });
   }
 
-  User.findOne({ id: user1 })
-    .then(user1 => {
-      if (!user1) {
-        res.status(404).json({ mesage: "user not found" });
+  Friends.findOne({
+    $or: [
+      { user1, user2 },
+      { user1: user2, user2: user1 }
+    ]
+  })
+    .then(relation => {
+      if (relation) {
+        res.status(400).json({ message: "friendship already exist" });
       } else {
-        User.findOne({ id: user2 }).then(user2 => {
-          if (!user2) {
+        User.findById(user1).then(user1 => {
+          if (!user1) {
             res.status(404).json({ mesage: "user not found" });
           } else {
-            const friendship = {
-              user1,
-              user2,
-              state1: "Acepted"
-            };
+            User.findById(user2).then(user2 => {
+              if (!user2) {
+                res.status(404).json({ mesage: "user not found" });
+              } else {
+                const friendship = {
+                  user1,
+                  user2,
+                  state1: "Acepted"
+                };
 
-            Friends.save(friendship).then(friendship => {
-              res.status(200).json(friendship);
+                Friends.create(friendship).then(friendship => {
+                  res.status(200).json(friendship);
+                });
+              }
             });
           }
         });
+      }
+    })
+    .catch(next);
+};
+
+module.exports.userFriends = (req, res, next) => {
+  const { id } = req.params;
+
+  Friends.find({ $or: [{ user1: id }, { user2: id }] })
+    .populate("user1")
+    .populate("user2")
+    .then(friends => {
+      if (!friends) {
+        res.status(404).json({ message: "Friends not found" });
+      } else {
+        res.status(200).json(friends);
       }
     })
     .catch(next);

@@ -33,6 +33,7 @@ app.use((req, res, next) => {
 
 const userRoutes = require("./config/routes/user.routes");
 const followRoutes = require("./config/routes/follow.routes");
+const friendRoutes = require("./config/routes/friends.routes");
 
 /**
  * Configure routes
@@ -41,6 +42,7 @@ const router = require("./config/routes.js");
 app.use("/", router);
 app.use("/user", userRoutes);
 app.use("/follow", followRoutes);
+app.use("/friend", friendRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
