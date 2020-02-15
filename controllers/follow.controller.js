@@ -38,9 +38,9 @@ module.exports.follow = (req, res, next) => {
 };
 
 module.exports.unFollow = (req, res, next) => {
-  const { bussiness, user } = req.body;
+  const { id } = req.params;
 
-  Follow.findOneAndRemove({ bussiness, userFollow: user })
+  Follow.findByIdAndRemove(id)
     .then(relation => {
       if (!relation) {
         res.status(404).json({ message: "Follow not found" });
@@ -57,7 +57,7 @@ module.exports.follows = (req, res, next) => {
   Follow.find({ userFollow: id })
     .then(data => {
       if (!data) {
-        res.status(404).json({ message: "No items" });
+        res.status(404).json({ message: "Not found relation" });
       } else {
         res.status(200).json(data);
       }

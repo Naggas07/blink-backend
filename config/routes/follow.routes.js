@@ -12,7 +12,7 @@ const rolMiddleware = require("../../middlewares/rol.middleware");
 // routes
 
 router.get(
-  "/userFollows",
+  "/userFollows/:id",
   authMiddleware.isAuthenticated,
   rolMiddleware.isNotBussines,
   followController.follows
@@ -23,6 +23,13 @@ router.post(
   authMiddleware.isAuthenticated,
   rolMiddleware.isNotBussines,
   followController.follow
+);
+
+router.delete(
+  "/delete/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotBussines,
+  followController.unFollow
 );
 
 module.exports = router;
