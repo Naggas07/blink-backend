@@ -5,6 +5,8 @@ const Topics = require("./Topics.models");
 
 const topics = Topics.find({}, { id: 0, name: 1 }).then(data => data);
 
+console.log(Topics.schema.path("name").enumValues);
+
 const EventSchema = new Schema(
   {
     title: {
@@ -14,22 +16,24 @@ const EventSchema = new Schema(
     location: {
       type: {
         type: String,
-        enum: ["Point"],
-        required: true
+        enum: ["Point"]
       },
       coordinates: {
-        type: [Number],
-        required: true
+        type: [Number]
       }
     },
     topics: {
       type: [String],
-      enum: topics
+      enum: Topics.schema.path("name").enumValues
     },
     business: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true
+    },
+    image: {
+      type: String,
+      default: null
     },
     date: {
       type: Date,
@@ -37,6 +41,12 @@ const EventSchema = new Schema(
     },
     limitUsers: {
       type: Number
+    },
+    reserves: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      required: true,
+      default: []
     }
   },
   {
