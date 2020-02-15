@@ -27,4 +27,11 @@ router.put(
 
 router.get("/list", authMiddleware.isAuthenticated, eventController.list);
 
+router.put(
+  "/unsuscribe/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotBussines,
+  eventController.unsuscribe
+);
+
 module.exports = router;

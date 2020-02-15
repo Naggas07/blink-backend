@@ -73,3 +73,25 @@ module.exports.list = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.unsuscribe = (req, res, next) => {
+  const { id } = req.params;
+  const { user } = req.body;
+
+  Event.findById(id)
+    .then(event => {
+      if (!event) {
+        res.status(404).json({ message: "Event not found" });
+      } else {
+        console.log(event.reserves[1], user);
+        const reserves = event.reserves.filter(data => data != user);
+        Event.findByIdAndUpdate(id, { reserves }, { new: true }).then(
+          update => {
+            res.status(202).json(update);
+          }
+        );
+        // res.json(event);
+      }
+    })
+    .catch(next);
+};
