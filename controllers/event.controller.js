@@ -90,7 +90,20 @@ module.exports.unsuscribe = (req, res, next) => {
             res.status(202).json(update);
           }
         );
-        // res.json(event);
+      }
+    })
+    .catch(next);
+};
+
+module.exports.userEvents = (req, res, next) => {
+  const { id } = req.params;
+
+  Event.find({ reserves: { $in: [id] } })
+    .then(events => {
+      if (!events) {
+        res.status(404).json({ message: "Not events founds" });
+      } else {
+        res.status(200).json(events);
       }
     })
     .catch(next);

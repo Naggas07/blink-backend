@@ -34,4 +34,11 @@ router.put(
   eventController.unsuscribe
 );
 
+router.get(
+  "/user/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotBussines,
+  eventController.userEvents
+);
+
 module.exports = router;
