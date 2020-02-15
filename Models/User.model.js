@@ -100,6 +100,13 @@ userSchema.virtual("Friends", {
   justOne: false
 });
 
+userSchema.virtual("LocationUser", {
+  ref: "LocationUser",
+  localField: "_id",
+  foreignField: "locations",
+  justOne: false
+});
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
