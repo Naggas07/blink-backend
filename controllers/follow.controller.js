@@ -43,3 +43,17 @@ module.exports.unFollow = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.follows = (req, res, next) => {
+  const { id } = req.params;
+
+  Follow.find({ userFollow: id })
+    .then(data => {
+      if (!data) {
+        res.status(404).json({ message: "No items" });
+      } else {
+        res.status(200).json(data);
+      }
+    })
+    .catch(next);
+};
