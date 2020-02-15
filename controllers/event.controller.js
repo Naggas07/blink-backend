@@ -1,5 +1,6 @@
 const Event = require("../Models/Event.model");
 const Topics = require("../Models/Topics.models");
+const User = require("../Models/User.model");
 
 module.exports.new = (req, res, next) => {
   console.log(Topics.schema.path("name").enumValues);
@@ -104,6 +105,35 @@ module.exports.userEvents = (req, res, next) => {
         res.status(404).json({ message: "Not events founds" });
       } else {
         res.status(200).json(events);
+      }
+    })
+    .catch(next);
+};
+
+module.exports.delete = (req, res, next) => {
+  const { id } = req.params;
+  const { user } = req.body;
+
+  Event.findById(id)
+    .then(event => {
+      if (event.business != user) {
+        User.findById(user).then(user => {
+          if (user.userType === "Admin") {
+            Event.findByIdAndDelete(id)
+              .then(del => {
+                res.status(204).json({ message: "Event delete" });
+              })
+              .catch(next);
+          } else {
+            res.status(403).json({ message: "Forbidden" });
+          }
+        });
+      } else {
+        Event.findByIdAndDelete(id)
+          .then(del => {
+            res.status(204).json({ message: "Event delete" });
+          })
+          .catch(next);
       }
     })
     .catch(next);

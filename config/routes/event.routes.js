@@ -41,4 +41,11 @@ router.get(
   eventController.userEvents
 );
 
+router.delete(
+  "/delete/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotUser,
+  eventController.delete
+);
+
 module.exports = router;
