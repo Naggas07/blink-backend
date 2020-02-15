@@ -22,4 +22,11 @@ router.get(
   friendController.userFriends
 );
 
+router.put(
+  "/update/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotBussines,
+  friendController.updateFriends
+);
+
 module.exports = router;
