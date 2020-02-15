@@ -18,4 +18,11 @@ router.get(
   followController.follows
 );
 
+router.post(
+  "/new",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotBussines,
+  followController.follow
+);
+
 module.exports = router;

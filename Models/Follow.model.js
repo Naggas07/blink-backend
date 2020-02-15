@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const followSchema = new Schema(
   {
-    bussinnes: {
+    business: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true

@@ -46,7 +46,7 @@ const userSchema = new Schema(
     userType: {
       type: String,
       required: true,
-      enum: ["User", "Bussines", "Admin"]
+      enum: ["User", "Business", "Admin"]
     },
     rangeLocation: {
       type: Number,

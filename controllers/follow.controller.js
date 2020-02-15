@@ -4,29 +4,36 @@ const User = require("../Models/User.model");
 const Follow = require("../Models/Follow.model");
 
 module.exports.follow = (req, res, next) => {
-  const { bussiness, user } = req.body;
+  const { business, user } = req.body;
 
-  User.findOne({ id: bussiness })
-    .then(b => {
-      if (!b) {
-        res.status(404).json({ message: "Bussiness not found" });
+  Follow.findOne({ business, userFollow: user })
+    .then(relation => {
+      if (relation) {
+        res.status(400).json({ message: "Relation already exist" });
       } else {
-        if (b.userType != "Bussiness") {
-          res.status(404).json({ message: "Bussiness not found" });
-        } else {
-          const follow = {
-            bussiness,
-            userFollow: user
-          };
+        User.findById(business).then(b => {
+          if (!b) {
+            res.status(404).json({ message: "Business not found" });
+          } else {
+            if (b.userType != "Business") {
+              res.status(404).json({ message: "Business not found" });
+            } else {
+              const follow = {
+                business,
+                userFollow: user
+              };
 
-          Follow.create(follow)
-            .then(relation => {
-              res.status(201).json(relation);
-            })
-            .catch(next);
-        }
+              Follow.create(follow)
+                .then(relation => {
+                  res.status(201).json(relation);
+                })
+                .catch(next);
+            }
+          }
+        });
       }
     })
+
     .catch(next);
 };
 

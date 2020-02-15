@@ -23,12 +23,12 @@ router.get(
 );
 
 router.get(
-  "/bussiness",
+  "/business",
   authMiddleware.isAuthenticated,
   userController.getBussiness
 );
 
-router.get("/list", authMiddleware.isAuthenticated, userController.getUsers);
+router.get("/users", authMiddleware.isAuthenticated, userController.getUsers);
 
 router.put(
   "/update/:id",

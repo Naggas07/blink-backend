@@ -37,7 +37,7 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.getBussiness = (_, res, next) => {
-  User.find({ userType: "Bussiness" })
+  User.find({ userType: "Business" })
     .then(users => {
       res.status(200).json(users);
     })
