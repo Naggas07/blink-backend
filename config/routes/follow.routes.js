@@ -32,4 +32,10 @@ router.delete(
   followController.unFollow
 );
 
+router.get(
+  "/followers/:id",
+  authMiddleware.isAuthenticated,
+  followController.followers
+);
+
 module.exports = router;

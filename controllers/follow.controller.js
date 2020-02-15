@@ -67,4 +67,12 @@ module.exports.follows = (req, res, next) => {
 
 module.exports.followers = (req, res, next) => {
   const { id } = req.params;
+
+  Follow.findById(id)
+    .populate("userFollow")
+    .populate("business")
+    .then(followers => {
+      res.status(200).json(followers);
+    })
+    .catch(next);
 };
