@@ -64,3 +64,7 @@ module.exports.follows = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.followers = (req, res, next) => {
+  const { id } = req.params;
+};

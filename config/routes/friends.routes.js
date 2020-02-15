@@ -29,4 +29,18 @@ router.put(
   friendController.updateFriends
 );
 
+router.get(
+  "/pendings/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotBussines,
+  friendController.pending
+);
+
+router.get(
+  "/acepted/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotBussines,
+  friendController.realFriends
+);
+
 module.exports = router;

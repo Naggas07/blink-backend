@@ -67,6 +67,8 @@ module.exports.updateFriends = (req, res, next) => {
   const { userId, toUpdate } = req.body;
 
   Friends.findById(id)
+    .populate("user1")
+    .populate("user2")
     .then(relation => {
       if (!relation) {
         res.status(404).json({ message: "Friend not found" });
@@ -79,6 +81,46 @@ module.exports.updateFriends = (req, res, next) => {
         Friends.findByIdAndUpdate(id, toChange, { new: true }).then(updated => {
           res.status(201).json(updated);
         });
+      }
+    })
+    .catch(next);
+};
+
+module.exports.pending = (req, res, next) => {
+  const { id } = req.params;
+
+  Friends.find({ $or: [{ user1: id }, { user2: id }] })
+    .populate("user1")
+    .populate("user2")
+    .then(relations => {
+      if (!relations) {
+        res.status(404).json({ message: "relations not found" });
+      } else {
+        const pendings = relations.filter(
+          friend => friend.state1 === "Pending" || friend.state2 === "Pending"
+        );
+
+        res.status(200).json(pendings);
+      }
+    })
+    .catch(next);
+};
+
+module.exports.realFriends = (req, res, next) => {
+  const { id } = req.params;
+
+  Friends.find({ $or: [{ user1: id }, { user2: id }] })
+    .populate("user1")
+    .populate("user2")
+    .then(relations => {
+      if (!relations) {
+        res.status(404).json({ message: "relations not found" });
+      } else {
+        const pendings = relations.filter(
+          friend => friend.state1 === "Acepted" && friend.state2 === "Acepted"
+        );
+
+        res.status(200).json(pendings);
       }
     })
     .catch(next);
