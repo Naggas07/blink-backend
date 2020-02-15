@@ -34,6 +34,7 @@ app.use((req, res, next) => {
 const userRoutes = require("./config/routes/user.routes");
 const followRoutes = require("./config/routes/follow.routes");
 const friendRoutes = require("./config/routes/friends.routes");
+const topicRoutes = require("./config/routes/topic.routes");
 
 /**
  * Configure routes
@@ -43,6 +44,7 @@ app.use("/", router);
 app.use("/user", userRoutes);
 app.use("/follow", followRoutes);
 app.use("/friend", friendRoutes);
+app.use("/topics", topicRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

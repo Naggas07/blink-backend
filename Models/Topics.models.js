@@ -6,6 +6,11 @@ const TopicSchema = new Schema(
     name: {
       type: String,
       required: true
+    },
+    state: {
+      type: String,
+      enum: ["Active", "Inactive"],
+      default: "Active"
     }
   },
   {
