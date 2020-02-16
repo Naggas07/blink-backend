@@ -40,8 +40,6 @@ const eventRoutes = require("./config/routes/event.routes");
 /**
  * Configure routes
  */
-const router = require("./config/routes.js");
-app.use("/", router);
 app.use("/user", userRoutes);
 app.use("/follow", followRoutes);
 app.use("/friend", friendRoutes);

@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 const Topic = require("../Models/Topics.models");
 
 module.exports.new = (req, res, next) => {

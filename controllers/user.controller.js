@@ -20,7 +20,8 @@ module.exports.create = (req, res, next) => {
     lastName2,
     email,
     password,
-    userType
+    userType,
+    avatar: req.file ? req.file.url : null
   };
 
   User.create(user)

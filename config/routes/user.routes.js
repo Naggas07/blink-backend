@@ -6,10 +6,14 @@ const userController = require("../../controllers/user.controller");
 const authMiddleware = require("../../middlewares/auth.middleware");
 const rolMiddleware = require("../../middlewares/rol.middleware");
 
+//cloudinary
+const upload = require("../cloudinary.config");
+
 // user routes
 router.post(
   "/register",
   authMiddleware.isNotAuthenticated,
+  upload.single("avatar"),
   userController.create
 );
 router.post("/login", authMiddleware.isNotAuthenticated, userController.login);
