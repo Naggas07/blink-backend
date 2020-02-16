@@ -89,6 +89,9 @@ module.exports.updateUser = (req, res, next) => {
   }
 
   const userUpdate = req.body;
+  if (req.file) {
+    userUpdate.avatar = req.file.url;
+  }
 
   User.findOneAndUpdate(id, userUpdate, { new: true })
     .then(user => {

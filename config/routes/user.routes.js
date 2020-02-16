@@ -36,6 +36,7 @@ router.get("/users", authMiddleware.isAuthenticated, userController.getUsers);
 router.put(
   "/update/:id",
   authMiddleware.isAuthenticated,
+  upload.single("avatar"),
   userController.updateUser
 );
 
