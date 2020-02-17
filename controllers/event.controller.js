@@ -31,7 +31,6 @@ module.exports.new = (req, res, next) => {
 
   Event.create(event)
     .then(event => {
-      console.log(event);
       res.status(202).json(event);
     })
     .catch(next);
