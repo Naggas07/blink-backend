@@ -65,6 +65,7 @@ module.exports.reserve = (req, res, next) => {
 
 module.exports.list = (req, res, next) => {
   Event.find()
+    .populate("comments")
     .then(events => {
       if (!events) {
         res.status(404).json({ message: "Events not found" });
@@ -80,6 +81,7 @@ module.exports.unsuscribe = (req, res, next) => {
   const { user } = req.body;
 
   Event.findById(id)
+
     .then(event => {
       if (!event) {
         res.status(404).json({ message: "Event not found" });
@@ -134,6 +136,21 @@ module.exports.delete = (req, res, next) => {
             res.status(204).json({ message: "Event delete" });
           })
           .catch(next);
+      }
+    })
+    .catch(next);
+};
+
+module.exports.eventDetail = (req, res, next) => {
+  const { id } = req.params;
+
+  Event.findById(id)
+    .populate("comments")
+    .then(event => {
+      if (!event) {
+        res.status(404).json({ message: "Event not found" });
+      } else {
+        res.status(200).json(event);
       }
     })
     .catch(next);

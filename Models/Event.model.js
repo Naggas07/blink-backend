@@ -70,6 +70,13 @@ EventSchema.virtual("users", {
   justOne: false
 });
 
+EventSchema.virtual("comments", {
+  ref: "CommentEvent",
+  localField: "_id",
+  foreignField: "comments",
+  justOne: false
+});
+
 const Event = mongoose.model("Event", EventSchema);
 
 module.exports = Event;

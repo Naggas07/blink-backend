@@ -48,4 +48,10 @@ router.delete(
   eventController.delete
 );
 
+router.get(
+  "/event/:id",
+  authMiddleware.isAuthenticated,
+  eventController.eventDetail
+);
+
 module.exports = router;
