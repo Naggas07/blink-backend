@@ -21,3 +21,5 @@ router.get(
   rolMiddleware.isAdmin,
   locationController.getLocations
 );
+
+module.exports = router;
