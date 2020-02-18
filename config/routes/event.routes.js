@@ -60,4 +60,11 @@ router.post(
   eventController.getEventsByFilters
 );
 
+router.get(
+  "/users/:id",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotUser,
+  eventController.getEventUsers
+);
+
 module.exports = router;

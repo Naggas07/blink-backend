@@ -185,3 +185,18 @@ module.exports.getEventsByFilters = (req, res, next) => {
       .catch(next);
   }
 };
+
+module.exports.getEventUsers = (req, res, next) => {
+  const { id } = req.params;
+
+  Event.findById(id)
+    .populate(reserves)
+    .then(event => {
+      if (!event) {
+        res.status(404).json({ message: "Event not found" });
+      } else {
+        res.status(200).json(event.reserves);
+      }
+    })
+    .catch(next);
+};
