@@ -154,3 +154,34 @@ module.exports.eventDetail = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.getEventsByFilters = (req, res, next) => {
+  const { latitude, longitude, distance, maxPrice, minPrice } = req.body;
+
+  let priceMin = !minPrice ? 0 : minPrice;
+  let priceMax = !maxPrice ? 1000 : maxPrice;
+
+  if (!latitude || !longitude || !distance) {
+    res.status(400).json({ message: "Location is required to this search" });
+  } else {
+    const query = {
+      location: {
+        $near: {
+          $geometry: { type: "Point", coordinates: [longitude, latitude] },
+          $maxDistance: distance
+        }
+      },
+      price: { $gte: priceMin, $lte: priceMax }
+    };
+
+    Event.find(query)
+      .then(events => {
+        if (!events) {
+          res.status(404).json({ message: "Events not found in this area" });
+        } else {
+          res.status(200).json(events);
+        }
+      })
+      .catch(next);
+  }
+};

@@ -54,4 +54,10 @@ router.get(
   eventController.eventDetail
 );
 
+router.post(
+  "/locations",
+  authMiddleware.isAuthenticated,
+  eventController.getEventsByFilters
+);
+
 module.exports = router;

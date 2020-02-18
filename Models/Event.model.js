@@ -47,6 +47,12 @@ const EventSchema = new Schema(
       ref: "User",
       required: true,
       default: []
+    },
+    price: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 1000
     }
   },
   {
