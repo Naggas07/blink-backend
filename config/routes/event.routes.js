@@ -48,11 +48,7 @@ router.delete(
   eventController.delete
 );
 
-router.get(
-  "/event/:id",
-  authMiddleware.isAuthenticated,
-  eventController.eventDetail
-);
+router.get("/:id", authMiddleware.isAuthenticated, eventController.eventDetail);
 
 router.post(
   "/locations",

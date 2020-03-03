@@ -3,8 +3,8 @@ const Topics = require("../Models/Topics.models");
 const User = require("../Models/User.model");
 
 module.exports.new = (req, res, next) => {
-  console.log(Topics.schema.path("name").enumValues);
-  console.log(req.body);
+  console.info("req body =>", req.body);
+  console.info("req params =>", req.params);
   const {
     title,
     location,
@@ -12,12 +12,9 @@ module.exports.new = (req, res, next) => {
     business,
     image,
     date,
-    limitUsers
+    limitUsers,
+    price
   } = req.body;
-
-  if ((!title, !business, !date)) {
-    res.status(400).json({ message: "items required" });
-  }
 
   const event = {
     title,
@@ -26,8 +23,14 @@ module.exports.new = (req, res, next) => {
     business,
     image,
     date,
-    limitUsers
+    limitUsers,
+    price
   };
+
+  if ((!event.title, !event.business, !event.date)) {
+    res.status(400).json({ message: "items required" });
+    console.log("error", event);
+  }
 
   Event.create(event)
     .then(event => {
@@ -144,6 +147,8 @@ module.exports.eventDetail = (req, res, next) => {
   const { id } = req.params;
 
   Event.findById(id)
+    .populate("business")
+    // .populate("reserves")
     .populate("comments")
     .then(event => {
       if (!event) {
@@ -190,7 +195,7 @@ module.exports.getEventUsers = (req, res, next) => {
   const { id } = req.params;
 
   Event.findById(id)
-    .populate(reserves)
+    .populate("reserves")
     .then(event => {
       if (!event) {
         res.status(404).json({ message: "Event not found" });

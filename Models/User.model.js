@@ -93,17 +93,24 @@ userSchema.methods.comparePassword = function(password) {
   return bcrypt.compare(password, this.password);
 };
 
-userSchema.virtual("Friends", {
+userSchema.virtual("friends", {
   ref: "Friends",
   localField: "_id",
   foreignField: "friends",
   justOne: false
 });
 
-userSchema.virtual("LocationUser", {
+userSchema.virtual("locations", {
   ref: "LocationUser",
   localField: "_id",
   foreignField: "locations",
+  justOne: false
+});
+
+userSchema.virtual("events", {
+  ref: "Event",
+  localField: "_id",
+  foreignField: "events",
   justOne: false
 });
 

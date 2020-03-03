@@ -27,4 +27,10 @@ router.put(
   topicController.update
 );
 
+router.get(
+  "/active",
+  authMiddleware.isAuthenticated,
+  topicController.getActiveTopics
+);
+
 module.exports = router;

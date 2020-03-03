@@ -18,12 +18,7 @@ router.post(
 );
 router.post("/login", authMiddleware.isNotAuthenticated, userController.login);
 router.post("/logout", authMiddleware.isAuthenticated, userController.logout);
-router.get(
-  "",
-  authMiddleware.isAuthenticated,
-  rolMiddleware.isAdmin,
-  userController.getAllUsers
-);
+router.get("", authMiddleware.isAuthenticated, userController.getAllUsers);
 
 router.get(
   "/business",
@@ -46,5 +41,7 @@ router.delete(
   rolMiddleware.isAdmin,
   userController.deleteUser
 );
+
+router.get("/user/:id", authMiddleware.isAuthenticated, userController.getUser);
 
 module.exports = router;

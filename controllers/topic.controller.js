@@ -42,3 +42,15 @@ module.exports.update = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.getActiveTopics = (_, res, next) => {
+  Topic.find({ state: "Active" })
+    .then(topics => {
+      if (!topics) {
+        res.status(404).json({ message: "Topics not found" });
+      } else {
+        res.status(200).json(topics);
+      }
+    })
+    .catch(next);
+};

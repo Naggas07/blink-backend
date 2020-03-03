@@ -33,7 +33,8 @@ const EventSchema = new Schema(
     },
     image: {
       type: String,
-      default: null
+      default:
+        "http://res.cloudinary.com/docfree/image/upload/v1582458576/B-link/no-featured-image.jpg.jpg"
     },
     date: {
       type: Date,
@@ -53,6 +54,10 @@ const EventSchema = new Schema(
       default: 0,
       min: 0,
       max: 1000
+    },
+    describe: {
+      type: String,
+      default: null
     }
   },
   {
@@ -68,13 +73,6 @@ const EventSchema = new Schema(
     }
   }
 );
-
-EventSchema.virtual("users", {
-  ref: "User",
-  localField: "_id",
-  foreignField: "users",
-  justOne: false
-});
 
 EventSchema.virtual("comments", {
   ref: "CommentEvent",

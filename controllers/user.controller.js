@@ -46,15 +46,17 @@ module.exports.getBussiness = (_, res, next) => {
 };
 
 module.exports.getAllUsers = (req, res, next) => {
-  User.find().then(users => {
-    res.json(users);
-  });
+  User.find()
+    .populate("events")
+    .then(users => {
+      res.json(users);
+    });
 };
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
-  if ((!email, !password)) {
+  if (!email || !password) {
     return res.status(400).json({ message: "email and password required" });
   }
 
@@ -83,17 +85,17 @@ module.exports.logout = (req, res) => {
 
 module.exports.updateUser = (req, res, next) => {
   const { id } = req.params;
-
   if (id != req.session.user.id && req.session.user.userType != "Admin") {
     res.status(403).json({ message: "Forbidden" });
   }
 
   const userUpdate = req.body;
+  console.log(req.file);
   if (req.file) {
     userUpdate.avatar = req.file.url;
   }
 
-  User.findOneAndUpdate(id, userUpdate, { new: true })
+  User.findByIdAndUpdate(id, userUpdate, { new: true })
     .then(user => {
       if (!user) {
         res.status(404).json({ message: "User not found" });
@@ -112,5 +114,13 @@ module.exports.deleteUser = (req, res, next) => {
     .then(ok => {
       res.status(200).json({ message: "User deleted" });
     })
+    .catch(next);
+};
+
+module.exports.getUser = (req, res, next) => {
+  console.info("Entra");
+  const { id } = req.params;
+  User.findById(id)
+    .then(user => res.status(200).json(user))
     .catch(next);
 };
