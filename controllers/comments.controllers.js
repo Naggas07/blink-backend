@@ -51,3 +51,13 @@ module.exports.delete = (req, res, next) => {
     res.status(403).json({ message: "Forbidden" });
   }
 };
+
+module.exports.eventComments = (req, res, next) => {
+  const { id } = req.params;
+
+  Comment.find({ event: id })
+    .then(comments => {
+      res.status(200).json(comments);
+    })
+    .catch(next);
+};

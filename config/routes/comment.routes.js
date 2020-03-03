@@ -25,4 +25,10 @@ router.delete(
   commentController.delete
 );
 
+router.get(
+  "/:id",
+  authMiddleware.isAuthenticated,
+  commentController.eventComments
+);
+
 module.exports = router;

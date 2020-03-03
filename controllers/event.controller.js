@@ -4,13 +4,12 @@ const User = require("../Models/User.model");
 
 module.exports.new = (req, res, next) => {
   console.info("req body =>", req.body);
-  console.info("req params =>", req.params);
+  console.info('File => ', req.file)
   const {
     title,
     location,
     topics,
     business,
-    image,
     date,
     limitUsers,
     price
@@ -21,10 +20,10 @@ module.exports.new = (req, res, next) => {
     location,
     topics,
     business,
-    image,
+    image: req.file ? req.file.url : null,
     date,
     limitUsers,
-    price
+    price,
   };
 
   if ((!event.title, !event.business, !event.date)) {
@@ -145,12 +144,13 @@ module.exports.delete = (req, res, next) => {
 
 module.exports.eventDetail = (req, res, next) => {
   const { id } = req.params;
-
+  console.info("ID => ", id);
   Event.findById(id)
     .populate("business")
-    // .populate("reserves")
-    .populate("comments")
+    .populate("reserves")
+    // .populate("comments")
     .then(event => {
+      console.info("event => ", typeof event.business);
       if (!event) {
         res.status(404).json({ message: "Event not found" });
       } else {

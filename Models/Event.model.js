@@ -43,12 +43,12 @@ const EventSchema = new Schema(
     limitUsers: {
       type: Number
     },
-    reserves: {
-      type: [mongoose.Schema.Types.ObjectId],
+    reserves: [{
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
-      default: []
-    },
+      // required: true,
+      // default: []
+    }],
     price: {
       type: Number,
       default: 0,
@@ -76,10 +76,12 @@ const EventSchema = new Schema(
 
 EventSchema.virtual("comments", {
   ref: "CommentEvent",
-  localField: "_id",
+  localField: "message",
   foreignField: "comments",
-  justOne: false
+  // justOne: false
 });
+
+EventSchema.set('toJSON', { virtuals: true })
 
 const Event = mongoose.model("Event", EventSchema);
 

@@ -9,12 +9,15 @@ const eventController = require("../../controllers/event.controller");
 const authMiddleware = require("../../middlewares/auth.middleware");
 const rolMiddleware = require("../../middlewares/rol.middleware");
 
+//cloudinary
+const upload = require("../cloudinary.config");
+
 // routes
 
 router.post(
   "/new",
   authMiddleware.isAuthenticated,
-  rolMiddleware.isNotUser,
+  upload.single("image"),
   eventController.new
 );
 
