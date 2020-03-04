@@ -3,8 +3,6 @@ const Topics = require("../Models/Topics.models");
 const User = require("../Models/User.model");
 
 module.exports.new = (req, res, next) => {
-  console.info("req body =>", req.body);
-  console.info("File => ", req.file);
   const {
     title,
     location,
@@ -21,7 +19,9 @@ module.exports.new = (req, res, next) => {
     location,
     topics,
     business,
-    image: req.file ? req.file.url : null,
+    image: req.file
+      ? req.file.url
+      : "http://res.cloudinary.com/docfree/image/upload/v1582458576/B-link/no-featured-image.jpg.jpg",
     date,
     limitUsers,
     price,
@@ -44,6 +44,8 @@ module.exports.reserve = (req, res, next) => {
   const { id } = req.params;
   const { user } = req.body;
 
+  console.log(id, req.body);
+
   Event.findById(id)
     .then(event => {
       if (!event) {
@@ -53,13 +55,12 @@ module.exports.reserve = (req, res, next) => {
         if (event.limitUsers > 0 && event.reserves.length >= event.limitUsers) {
           res.status(400).json({ message: "Event full" });
         } else {
-          Event.findByIdAndUpdate(
-            id,
-            { reserves: newUsers },
-            { new: true }
-          ).then(updated => {
-            res.status(201).json(updated);
-          });
+          Event.findByIdAndUpdate(id, { reserves: newUsers }, { new: true })
+            .populate("reserves")
+            .populate("business")
+            .then(updated => {
+              res.status(201).json(updated);
+            });
         }
       }
     })
