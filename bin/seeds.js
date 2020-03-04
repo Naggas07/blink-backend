@@ -1,8 +1,42 @@
-const mongoose = require('mongoose');
-//const Model1 = require('../models/model1.model');
-//const Model2 = require('../models/model2.model');
+require("../config/db.config");
 
-const dbtitle = 'base-api';
-mongoose.connect(`mongodb://localhost/${dbtitle}`);
-//Model1.collection.drop();
-//Model2.collection.drop();
+const User = require("../Models/User.model");
+const faker = require("faker");
+
+// for (let i = 0; i < 100; i++) {
+//   const user = new User({
+//     nickName: faker.internet.userName(),
+//     name: faker.name.firstName(),
+//     lastName1: faker.name.lastName(),
+//     lastName2: faker.name.lastName(),
+//     password: 123123123,
+//     email: faker.internet.email(),
+//     userType: "User",
+//     avatar: faker.internet.avatar(),
+//     rangeLocation: 5000
+//   });
+
+//   user
+//     .save()
+//     .then(user => console.log(user.nickName))
+//     .catch(error => console.error(error));
+// }
+
+for (let i = 0; i < 25; i++) {
+  const nameComp = faker.company.companyName();
+  const user = new User({
+    nickName: nameComp,
+    name: nameComp,
+    lastName1: faker.company.companySuffix(),
+
+    password: 123123123,
+    email: faker.internet.email(),
+    userType: "Business",
+    avatar: faker.image.business()
+  });
+
+  user
+    .save()
+    .then(user => console.log(user.nickName))
+    .catch(error => console.error(error));
+}

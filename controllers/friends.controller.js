@@ -66,9 +66,9 @@ module.exports.updateFriends = (req, res, next) => {
   const { id } = req.params;
   const { userId, toUpdate } = req.body;
 
+  console.log(userId);
+
   Friends.findById(id)
-    .populate("user1")
-    .populate("user2")
     .then(relation => {
       if (!relation) {
         res.status(404).json({ message: "Friend not found" });
@@ -78,9 +78,12 @@ module.exports.updateFriends = (req, res, next) => {
           state2: relation.user2 == userId ? toUpdate : relation.state2
         };
 
-        Friends.findByIdAndUpdate(id, toChange, { new: true }).then(updated => {
-          res.status(201).json(updated);
-        });
+        Friends.findByIdAndUpdate(id, toChange, { new: true })
+          .populate("user1")
+          .populate("user2")
+          .then(updated => {
+            res.status(201).json(updated);
+          });
       }
     })
     .catch(next);
