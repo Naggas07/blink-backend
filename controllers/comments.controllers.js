@@ -3,6 +3,8 @@ const Comment = require("../Models/eventComents.model");
 module.exports.new = (req, res, next) => {
   const { event, user, message } = req.body;
 
+  console.log(req.body);
+
   if ((!event, !user, !message)) {
     res.status(400).json({ message: "All items are required" });
   } else {
@@ -56,6 +58,7 @@ module.exports.eventComments = (req, res, next) => {
   const { id } = req.params;
 
   Comment.find({ event: id })
+    .populate("user")
     .then(comments => {
       res.status(200).json(comments);
     })

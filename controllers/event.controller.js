@@ -4,7 +4,7 @@ const User = require("../Models/User.model");
 
 module.exports.new = (req, res, next) => {
   console.info("req body =>", req.body);
-  console.info('File => ', req.file)
+  console.info("File => ", req.file);
   const {
     title,
     location,
@@ -12,7 +12,8 @@ module.exports.new = (req, res, next) => {
     business,
     date,
     limitUsers,
-    price
+    price,
+    describe
   } = req.body;
 
   const event = {
@@ -24,6 +25,7 @@ module.exports.new = (req, res, next) => {
     date,
     limitUsers,
     price,
+    describe
   };
 
   if ((!event.title, !event.business, !event.date)) {

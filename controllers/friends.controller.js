@@ -108,6 +108,7 @@ module.exports.pending = (req, res, next) => {
 
 module.exports.realFriends = (req, res, next) => {
   const { id } = req.params;
+  console.log(req.params);
 
   Friends.find({ $or: [{ user1: id }, { user2: id }] })
     .populate("user1")
