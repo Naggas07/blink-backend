@@ -43,4 +43,11 @@ router.get(
   friendController.realFriends
 );
 
+router.get(
+  "/search/:search",
+  authMiddleware.isAuthenticated,
+  rolMiddleware.isNotBussines,
+  friendController.friendName
+);
+
 module.exports = router;

@@ -66,7 +66,7 @@ module.exports.updateFriends = (req, res, next) => {
   const { id } = req.params;
   const { userId, toUpdate } = req.body;
 
-  console.log(userId);
+  console.log(userId, toUpdate);
 
   Friends.findById(id)
     .then(relation => {
@@ -128,4 +128,14 @@ module.exports.realFriends = (req, res, next) => {
       }
     })
     .catch(next);
+};
+
+module.exports.friendName = (req, res, next) => {
+  let { search } = req.params;
+  search = search.toUpperCase();
+  console.log(search);
+
+  User.find({
+    $or: [{ name: search }, { nickName: search }]
+  }).then(friends => res.json(friends));
 };

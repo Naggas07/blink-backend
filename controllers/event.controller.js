@@ -208,3 +208,37 @@ module.exports.getEventUsers = (req, res, next) => {
     })
     .catch(next);
 };
+
+module.exports.searchName = (req, res, next) => {
+  let { name } = req.params;
+
+  if (name === "no-text") {
+    Event.find()
+      .populate("comments")
+      .then(events => {
+        res.status(200).json(events);
+      });
+  }
+
+  Event.find({ title: { $regex: `.*${name}.*` } })
+    .populate("comments")
+    .then(events => {
+      res.status(200).json(events);
+    })
+    .catch(next);
+};
+
+module.exports.businessEvents = (req, res, next) => {
+  const { id } = req.params;
+
+  Event.find({ business: id })
+
+    .then(events => {
+      if (!events) {
+        res.status(404).json({ message: "Events not found" });
+      } else {
+        res.status(200).json(events);
+      }
+    })
+    .catch(next);
+};

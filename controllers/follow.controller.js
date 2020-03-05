@@ -6,8 +6,11 @@ const Follow = require("../Models/Follow.model");
 module.exports.follow = (req, res, next) => {
   const { business, user } = req.body;
 
+  console.log(req.body);
+
   Follow.findOne({ business, userFollow: user })
     .then(relation => {
+      console.log(relation);
       if (relation) {
         res.status(400).json({ message: "Relation already exist" });
       } else {
@@ -53,8 +56,10 @@ module.exports.unFollow = (req, res, next) => {
 
 module.exports.follows = (req, res, next) => {
   const { id } = req.params;
+  console.log(req.params);
 
   Follow.find({ userFollow: id })
+    .populate("business")
     .then(data => {
       if (!data) {
         res.status(404).json({ message: "Not found relation" });
@@ -68,7 +73,7 @@ module.exports.follows = (req, res, next) => {
 module.exports.followers = (req, res, next) => {
   const { id } = req.params;
 
-  Follow.findById(id)
+  Follow.find({ business: id })
     .populate("userFollow")
     .populate("business")
     .then(followers => {

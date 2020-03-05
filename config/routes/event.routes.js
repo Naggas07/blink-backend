@@ -66,4 +66,16 @@ router.get(
   eventController.getEventUsers
 );
 
+router.get(
+  "/search/:name",
+  authMiddleware.isAuthenticated,
+  eventController.searchName
+);
+
+router.get(
+  "/business/:id",
+  authMiddleware.isAuthenticated,
+  eventController.businessEvents
+);
+
 module.exports = router;
